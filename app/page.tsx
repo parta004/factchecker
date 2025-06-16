@@ -3,6 +3,7 @@
 import { Suspense, memo } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import ErrorBoundary from '@/app/components/ErrorBoundary';
 import { Sidebar } from '@/app/components/sidebar/sidebar';
 import { FeaturedVideos } from '@/app/sections/home/FeaturedVideos';
 import { Divider } from './components/ui/divider';
@@ -79,11 +80,13 @@ export default function Home() {
       {/* Onboarding Modal */}
       {theme !== 'dark' && <NewsBackground />}
       
-      <FirstTimeUserModal
-        isOpen={!hasCompletedOnboarding}
-        onComplete={completeOnboarding}
-        onSkip={skipOnboarding}
-      />
+      <ErrorBoundary>
+        <FirstTimeUserModal
+          isOpen={!hasCompletedOnboarding}
+          onComplete={completeOnboarding}
+          onSkip={skipOnboarding}
+        />
+      </ErrorBoundary>
 
       {/* Main Content */}
       <motion.div 
@@ -94,26 +97,40 @@ export default function Home() {
       >
         {/* Sidebar */}
         <motion.div className="shrink-0" variants={itemVariants}>
-          <Sidebar />
+          <ErrorBoundary>
+            <Sidebar />
+          </ErrorBoundary>
         </motion.div>
 
         {/* Main Content */}
         <motion.div className="flex-1 relative" variants={itemVariants}>
           {/* Filter Layout */}
           <div className="mb-6">
-            <FilterLayout />
+            <ErrorBoundary>
+              <FilterLayout />
+            </ErrorBoundary>
           </div>
 
           {/* Feed Header */}
           <div className="mb-6 px-4">
-            <FeedHeader />
+            <ErrorBoundary>
+              <FeedHeader />
+            </ErrorBoundary>
           </div>
 
           {/* Featured Videos */}
           <div className="mb-8 px-8">
+<<<<<<< fix-merge-conflict
+            <ErrorBoundary>
+              <Suspense fallback={<SimpleSkeleton />}>
+                <FeaturedVideos />
+              </Suspense>
+            </ErrorBoundary>
+=======
             <Suspense fallback={<></>}>
               <FeaturedVideos />
             </Suspense>
+>>>>>>> master
           </div>
 
           {/* Divider */}
@@ -122,10 +139,19 @@ export default function Home() {
           </div>
 
           {/* Featured News */}
+<<<<<<< fix-merge-conflict
+          <div className="pb-8 px-8">
+            <ErrorBoundary>
+              <Suspense fallback={<SimpleSkeleton />}>
+                <FeaturedNews />
+              </Suspense>
+            </ErrorBoundary>
+=======
           <div className="pb-8 mb-20 px-8">
             <Suspense fallback={<></>}>
               <FeaturedNews />
             </Suspense>
+>>>>>>> master
           </div>
         </motion.div>
 

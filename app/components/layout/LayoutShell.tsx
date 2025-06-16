@@ -15,7 +15,8 @@ export function LayoutShell({ children }: LayoutShellProps) {
   // Simple video mode detection
   const isVideoPlayerMode = pathname.startsWith('/watch') || 
                            pathname.startsWith('/videos/') ||
-                           pathname.includes('/player/');
+                           pathname.includes('/player/') || 
+                           pathname.startsWith('/reel');
 
   return (
     <div className="relative flex min-h-screen flex-col">

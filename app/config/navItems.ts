@@ -1,4 +1,4 @@
-import { Home, Newspaper, Film, Clock10Icon } from 'lucide-react';
+import { Home, Film, Plus, User, GraduationCap } from 'lucide-react';
 
 export const NAVIGATION_CONFIG = {
   mainNav: [
@@ -19,7 +19,12 @@ export const NAVIGATION_CONFIG = {
     {
       href: '/upload',
       label: 'Upload',
-      description: 'Upload'
+      description: 'Upload content for fact-checking'
+    },
+    {
+      href: '/profile',
+      label: 'Profile',
+      description: 'User profile and settings'
     },
     {
       href: '/timeline',
@@ -38,7 +43,7 @@ interface TabItem {
   isSpecial?: boolean;
 }
 
-
+// Updated navigation: Home, Reel, Upload, Profile, Education
 export const MOBILE_NAV: TabItem[] = [
   {
     id: 'home',
@@ -53,10 +58,22 @@ export const MOBILE_NAV: TabItem[] = [
     href: '/reel'
   },
   {
-    id: 'edu',
+    id: 'upload',
+    label: 'Upload',
+    icon: Plus,
+    href: '/upload',
+    isSpecial: true // Highlight the upload button
+  },
+  {
+    id: 'profile',
+    label: 'Profile',
+    icon: User,
+    href: '/profile'
+  },
+  {
+    id: 'education',
     label: 'Education',
-    icon: Clock10Icon,
-    href: '/timeline',
-    isSpecial: true
+    icon: GraduationCap,
+    href: '/timeline'
   }
 ];
