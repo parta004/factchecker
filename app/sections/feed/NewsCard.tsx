@@ -7,7 +7,6 @@ import { NewsCardHeader } from '@/app/components/news/NewsCardHeader';
 import { FactCheckModal } from '@/app/components/modals/FactCheck/FactCheckModal';
 import NewsCardContent from '@/app/components/news/NewsCardContent';
 import { useLayoutTheme } from '@/app/hooks/use-layout-theme';
-import { cn } from '@/app/lib/utils';
 import NewsCardWrapper from './NewsCardWrapper';
 
 interface NewsCardProps {
@@ -128,23 +127,6 @@ const NewsCard = memo(function NewsCard({
           : '0 4px 12px -2px rgba(0, 0, 0, 0.1)'
     };
   }, [isCompact, colors, mounted, isDark, isHovered]);
-
-  if (!mounted) {
-    return (
-      <div 
-        className={cn(
-          'group relative cursor-pointer flex flex-col justify-between',
-          cardStyles.height,
-          'rounded-xl border-1 transition-all duration-300 overflow-hidden',
-          className
-        )}
-        style={{
-          backgroundColor: cardStyles.background,
-          boxShadow: cardStyles.boxShadow
-        }}
-      />
-    );
-  }
 
   return (
     <>

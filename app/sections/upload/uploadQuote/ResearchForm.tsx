@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CardContent } from '../../components/ui/card';
-import type { ResearchRequest } from './types';
+import { CardContent } from '../../../components/ui/card';
+import type { ResearchRequest } from '../types';
 import ResearchFormSubmit from './ResearchFormSubmit';
 import ResearchFormContent from './ResearchFormContent';
 import ResearchFormStatement from './ResearchFormStatement';
 import PredefinedStatements from './PredefinedStatements';
+import { scrollDown } from '@/app/components/animations/Scroll';
 
 interface ResearchFormProps {
   onSubmit: (data: ResearchRequest) => Promise<void>;
@@ -73,6 +74,7 @@ export function ResearchForm({ onSubmit, isLoading }: ResearchFormProps) {
         datetime: new Date().toISOString(),
         statement_date: formData.statement_date || undefined
       });
+      scrollDown();
     }
   };
 
@@ -108,7 +110,7 @@ export function ResearchForm({ onSubmit, isLoading }: ResearchFormProps) {
 
       <CardContent className="pb-6 sm:pb-8">
         <motion.div
-          className="text-center mb-8"
+          className="text-center mb-8 flex flex-col items-center gap-2"
         >
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-700 bg-clip-text text-transparent mb-2">
             Quote fast-check
