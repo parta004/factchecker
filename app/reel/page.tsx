@@ -23,7 +23,7 @@ function ReelPageContent() {
 
   return (
     <VideoDataStates result={videoDataResult}>
-      <div className="h-screen bg-black relative">
+      <div className="h-screen bg-black relative overflow-hidden select-none">
         <YouTubeMobilePlayer
           videos={videoDataResult.enhancedVideos}
           initialIndex={videoDataResult.initialIndex}
@@ -40,11 +40,18 @@ export default function ReelPage() {
       <div className="h-screen bg-black flex items-center justify-center">
         <motion.div
           className="text-center text-white"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" />
-          <p className="text-lg">Loading player...</p>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          >
+            <Loader2 className="w-12 h-12 mx-auto mb-4" />
+          </motion.div>
+          <p className="text-lg font-medium">Loading Reel Player...</p>
+          <p className="text-sm text-white/60 mt-2">Preparing your fact-checked videos</p>
         </motion.div>
       </div>
     }>

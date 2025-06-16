@@ -19,7 +19,7 @@ interface MobileNavbarProps {
 
 const NAVBAR_HEIGHTS = {
   compact: 48,
-  expanded: 72
+  expanded: 48  // Reduced from 72 to 48 for TikTok-style layout
 } as const;
 
 const SAFE_AREA_BOTTOM = 'max(env(safe-area-inset-bottom), 16px)';

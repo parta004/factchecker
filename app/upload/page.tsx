@@ -1,155 +1,146 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Video, Sparkles, PenToolIcon, TwitterIcon } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
-import UploadLayout from "../sections/upload/UploadLayout";
-import UploadVideo from "../sections/uploadyt/UploadVideo";
-import { useLayoutTheme } from '@/app/hooks/use-layout-theme';
-import { GlassContainer } from '@/app/components/ui/containers/GlassContainer';
-import Image from 'next/image';
-import TwitterForm from '../sections/upload/uploadTwitter/TwitterForm';
+import { Upload, Video, Link, FileText, Zap } from 'lucide-react';
+import { useState } from 'react';
 
-const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: [0.25, 0.46, 0.45, 0.94],
-            staggerChildren: 0.1
-        }
-    }
-};
+export default function UploadPage() {
+  const [uploadType, setUploadType] = useState<'video' | 'url' | 'text'>('url');
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.4 }
-    }
-};
+  return (
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <motion.div
+        className="pt-16 pb-8 px-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h1 className="text-2xl font-bold text-center mb-2">Upload Content</h1>
+        <p className="text-gray-400 text-center">Submit content for fact-checking analysis</p>
+      </motion.div>
 
-const Page = () => {
-    const { isDark } = useLayoutTheme();
+      {/* Upload Type Selector */}
+      <motion.div
+        className="px-4 mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <div className="flex bg-gray-800/50 rounded-xl p-1">
+          {[
+            { type: 'url' as const, icon: Link, label: 'URL' },
+            { type: 'video' as const, icon: Video, label: 'Video' },
+            { type: 'text' as const, icon: FileText, label: 'Text' }
+          ].map(({ type, icon: Icon, label }) => (
+            <button
+              key={type}
+              onClick={() => setUploadType(type)}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg transition-all ${
+                uploadType === type
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              <span className="text-sm font-medium">{label}</span>
+            </button>
+          ))}
+        </div>
+      </motion.div>
 
-    return (
-        <motion.div
-            className="min-h-screen bg-background"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-                background: isDark
-                    ? `linear-gradient(135deg, 
-                  rgba(59, 130, 246, 0.1) 0%,
-                  rgba(147, 91, 104, 0.1) 100%
-                )`
-                    : `linear-gradient(135deg, 
-                  rgba(59, 130, 246, 0.05) 0%,
-                  rgba(147, 51, 234, 0.05) 100%
-                )`,
-            }}
-        >
-            <Image
-                src={isDark ? 'logo_large_black.png' : 'logo_large_white.png'}
-                alt="Background"
-                layout="fill"
-                objectFit="cover"
-                className="absolute inset-0 z-0 opacity-5"
+      {/* Upload Form */}
+      <motion.div
+        className="px-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6">
+          {uploadType === 'url' && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Video URL</label>
+                <input
+                  type="url"
+                  placeholder="https://youtube.com/watch?v=..."
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none"
                 />
-            {/* Main Container */}
-            <div className="container mx-auto py-6 max-w-6xl">
-                {/* Header Section */}
-                <motion.div
-                    className="text-center mb-8"
-                    variants={itemVariants}
-                >
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <motion.div
-                            className="p-2 rounded-lg bg-primary/10"
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <Sparkles className="h-6 w-6 text-primary" />
-                        </motion.div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                            Fact-Check Analysis
-                        </h1>
-                    </div>
-                    <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base">
-                        Upload content for comprehensive fact-checking and credibility analysis
-                    </p>
-                </motion.div>
-
-                {/* Enhanced Tabs */}
-                <motion.div variants={itemVariants}>
-                    <Tabs defaultValue="statement" className="w-full">
-                        <div className="flex justify-center mb-6">
-                            <TabsList
-                                variant="pills"
-                                className="grid w-full max-w-md grid-cols-3 bg-muted/30 backdrop-blur-sm"
-                            >
-                                <TabsTrigger
-                                    value="statement"
-                                    icon={<PenToolIcon className="h-4 w-4" />}
-                                    className="text-sm font-medium"
-                                >
-                                    <span className="hidden sm:inline">Text Statement</span>
-                                    <span className="sm:hidden">Text</span>
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="tweet"
-                                    icon={<TwitterIcon className="h-4 w-4" />}
-                                    className="text-sm font-medium data-[state=active]:bg-cyan-100/50"
-                                >
-                                    <span className="hidden sm:inline">Tweet analysis</span>
-                                    <span className="sm:hidden">Tweet</span>
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="video"
-                                    icon={<Video className="h-4 w-4" />}
-                                    className="text-sm font-medium data-[state=active]:bg-red-100/50"
-                                >
-                                    <span className="hidden sm:inline">Video Content</span>
-                                    <span className="sm:hidden">Video</span>
-                                </TabsTrigger>
-                            </TabsList>
-                        </div>
-
-                        {/* Unified Glass Container for Tab Content */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            <GlassContainer
-                                style="frosted"
-                                rounded="2xl"
-                                shadow="glow"
-                                theme={isDark ? 'dark' : 'light'}
-                                overlay={true}
-                                overlayOpacity={isDark ? 0.05 : 0.1}
-                                className="overflow-hidden backdrop-blur-xl"
-                            >
-                                <TabsContent value="statement" className="mt-0 border-0 p-0">
-                                    <UploadLayout />
-                                </TabsContent>
-                                <TabsContent value="video" className="mt-0 border-0 p-0">
-                                    <UploadVideo />
-                                </TabsContent>
-                                <TabsContent value="tweet" className="mt-0 border-0 p-0">
-                                    <TwitterForm />
-                                </TabsContent>
-                            </GlassContainer>
-                        </motion.div>
-                    </Tabs>
-                </motion.div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Description (Optional)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Add context or specific claims to fact-check..."
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
+                />
+              </div>
             </div>
-        </motion.div>
-    );
-};
+          )}
 
-export default Page;
+          {uploadType === 'video' && (
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
+                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-400 mb-2">Drop your video file here or click to browse</p>
+                <p className="text-sm text-gray-500">MP4, MOV, AVI up to 500MB</p>
+                <input type="file" accept="video/*" className="hidden" />
+              </div>
+            </div>
+          )}
+
+          {uploadType === 'text' && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Text Content</label>
+                <textarea
+                  rows={6}
+                  placeholder="Paste the text content you want fact-checked..."
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <motion.button
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Zap className="w-4 h-4" />
+            Start Fact-Check Analysis
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Features */}
+      <motion.div
+        className="px-4 mt-8 pb-24"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <h3 className="text-lg font-semibold mb-4">What we analyze:</h3>
+        <div className="space-y-3">
+          {[
+            '📊 Data accuracy and source verification',
+            '🗣️ Emotional manipulation techniques',
+            '🧠 Logical fallacies and reasoning errors',
+            '🍒 Cherry-picking and selective reporting',
+            '✅ Cross-reference with reliable sources'
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-3 text-gray-300"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + index * 0.1 }}
+            >
+              <span>{feature}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}

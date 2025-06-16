@@ -6,16 +6,72 @@ import { VideoWithTimestamps } from '@/app/types/video_api';
 import { PlayerTimeline } from '@/app/sections/player/timeline/PlayerTimeline';
 import { VideoPlayerHeader } from '@/app/components/video/VideoPlayerHeader';
 import { useLayoutTheme } from '@/app/hooks/use-layout-theme';
-import { MobileNavbar } from '@/app/sections/navigation/MobileNavbar';
 import { YouTubePlayerWithSync } from './YouTubePlayerWithSync';
 import YouTubeMobileContainer from './YouTubeMobileContainer';
 import PlayerOverlayUi from './PlayerOverlayUi';
+import { FactCheckIndicators } from '@/app/components/reel/FactCheckIndicators';
+import { FactCheckBottomSheet } from '@/app/components/reel/FactCheckBottomSheet';
+import { FactCheckIndicators as FactCheckIndicatorsType, CommunityNote } from '@/app/types/fact-check';
 
 interface YouTubeMobilePlayerProps {
   videos?: VideoWithTimestamps[];
   initialIndex?: number;
   autoPlay?: boolean;
 }
+
+// Mock data for demonstration - replace with real data integration
+const mockFactCheckData: FactCheckIndicatorsType = {
+  truthScore: 75,
+  manipulationAlerts: [
+    {
+      type: 'emotional',
+      severity: 'medium',
+      description: 'Appeals to emotion detected',
+      timestamp: 30
+    },
+    {
+      type: 'data',
+      severity: 'low', 
+      description: 'Data may be cherry-picked',
+      timestamp: 90
+    }
+  ],
+  sourceVerification: [
+    {
+      sourceType: 'verified',
+      credibilityScore: 85,
+      sourceName: 'Reuters'
+    },
+    {
+      sourceType: 'questionable',
+      credibilityScore: 30,
+      sourceName: 'Unknown Blog'
+    }
+  ],
+  communityNotes: 3,
+  confidenceLevel: 82
+};
+
+const mockCommunityNotes: CommunityNote[] = [
+  {
+    id: '1',
+    statement: 'The statistics mentioned in this video are from 2019 and may not reflect current data.',
+    votes: { helpful: 45, unhelpful: 3 },
+    sources: ['https://example.com/source1', 'https://example.com/source2'],
+    timestamp: new Date(),
+    context: 'Data accuracy concern',
+    severity: 'medium'
+  },
+  {
+    id: '2', 
+    statement: 'Additional context: This policy was updated in 2023 with significant changes.',
+    votes: { helpful: 32, unhelpful: 1 },
+    sources: ['https://example.com/source3'],
+    timestamp: new Date(),
+    context: 'Missing context',
+    severity: 'low'
+  }
+];
 
 export function YouTubeMobilePlayer({ 
   videos, 
@@ -25,8 +81,9 @@ export function YouTubeMobilePlayer({
   const { isDark } = useLayoutTheme();
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [showTimeline, setShowTimeline] = useState(false);
-  const [showHeader, setShowHeader] = useState(true);
-  const [navbarCollapsed, setNavbarCollapsed] = useState(false);
+  const [showHeader, setShowHeader] = useState(false);
+  const [showFactCheckDetails, setShowFactCheckDetails] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
   
   // Sync state
   const [currentVideoTime, setCurrentVideoTime] = useState(0);
@@ -55,7 +112,7 @@ export function YouTubeMobilePlayer({
   const currentVideo = videos?.[currentIndex];
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
+    <div className="reel-container relative w-full h-screen overflow-hidden bg-black">
       {/* Video Container */}
       <YouTubeMobileContainer
         videos={videos}
@@ -102,6 +159,18 @@ export function YouTubeMobilePlayer({
                 />
               )}
 
+                {/* Left Side Panel - Professional Fact-Check Indicators */}
+                {index === currentIndex && (
+                  <FactCheckIndicators 
+                    data={mockFactCheckData}
+                    communityNotes={mockCommunityNotes}
+                    onDetailsOpen={() => setShowFactCheckDetails(true)}
+                  />
+                )}
+
+              {/* Right Side Panel - Reserved for swipe gestures (EMPTY) */}
+              <div className="right-swipe-area absolute right-0 top-0 w-20 h-full z-10" />
+
               {/* Overlay UI */}
               <PlayerOverlayUi
                 index={index}
@@ -128,10 +197,8 @@ export function YouTubeMobilePlayer({
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="absolute left-0 right-0 backdrop-blur-md border-t border-white/20 p-4 z-50"
               style={{
-                bottom: '10px',
-                background: isDark
-                  ? 'rgba(15, 23, 42, 0.95)'
-                  : 'rgba(255, 255, 255, 0.95)'
+                bottom: '80px', // Positioned above bottom navigation
+                background: 'rgba(0, 0, 0, 0.9)'
               }}
             >
               <PlayerTimeline
@@ -145,10 +212,13 @@ export function YouTubeMobilePlayer({
           )}
         </AnimatePresence>
       )}
-      
-      <MobileNavbar 
-        isVideoPlayerMode={true}
-        onVideoPlayerModeToggle={() => setNavbarCollapsed(!navbarCollapsed)}
+
+      {/* Fact-Check Details Bottom Sheet */}
+      <FactCheckBottomSheet
+        isOpen={showFactCheckDetails}
+        onClose={() => setShowFactCheckDetails(false)}
+        data={mockFactCheckData}
+        communityNotes={mockCommunityNotes}
       />
     </div>
   );

@@ -421,3 +421,191 @@
     transform: translateY(-10px) rotate(180deg);
   }
 }
+
+/* ===============================================
+   MOBILE REEL PLAYER OPTIMIZATIONS
+   =============================================== */
+
+/* Safe area insets for devices with notches */
+.safe-area-pb {
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+}
+
+.h-safe-area-inset-bottom {
+  height: env(safe-area-inset-bottom);
+}
+
+/* Touch target optimization */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Reel container optimizations */
+.reel-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden;
+  will-change: transform;
+  overscroll-behavior: none;
+}
+
+/* Video container performance */
+.video-container {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Gesture area styling */
+.gesture-area {
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Glassmorphism effects */
+.glass-effect {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-navigation {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth transitions for mobile */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent scrolling when bottom sheet is open */
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Progress ring animation */
+@keyframes progress-ring {
+  from {
+    stroke-dasharray: 0 126;
+  }
+  to {
+    stroke-dasharray: var(--progress) 126;
+  }
+}
+
+.progress-ring {
+  animation: progress-ring 0.8s ease-out forwards;
+}
+
+/* Pulse animation for alerts */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Ripple effect for touch feedback */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  animation: ripple 0.6s linear;
+}
+
+/* Bottom sheet animations */
+.bottom-sheet-enter {
+  transform: translateY(100%);
+}
+
+.bottom-sheet-enter-active {
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-sheet-exit {
+  transform: translateY(0);
+}
+
+.bottom-sheet-exit-active {
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Optimize for high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-optimized {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Dark mode optimizations for OLED screens */
+@media (prefers-color-scheme: dark) {
+  .oled-black {
+    background-color: #000000;
+  }
+  
+  .oled-friendly {
+    background-color: rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* Motion preference respect */
+@media (prefers-reduced-motion: reduce) {
+  .reel-container,
+  .smooth-transition,
+  .animate-pulse-subtle {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Battery saving optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
