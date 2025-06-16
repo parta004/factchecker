@@ -28,7 +28,6 @@ interface ActiveStatement {
   endTime?: number; // When the statement context ends
 }
 
-<<<<<<< fix-merge-conflict
 // Mock data for demonstration - replace with real data integration
 const mockFactCheckData: FactCheckIndicatorsType = {
   truthScore: 75,
@@ -83,8 +82,6 @@ const mockCommunityNotes: CommunityNote[] = [
   }
 ];
 
-=======
->>>>>>> master
 export function YouTubeMobilePlayer({ 
   videos, 
   initialIndex = 0, 
@@ -94,6 +91,7 @@ export function YouTubeMobilePlayer({
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [showTimeline, setShowTimeline] = useState(false);
   const [navbarCollapsed, setNavbarCollapsed] = useState(false);
+  const [showFactCheckDetails, setShowFactCheckDetails] = useState(false);
   
   // Header visibility state
   const [activeStatements, setActiveStatements] = useState<ActiveStatement[]>([]);
@@ -116,13 +114,13 @@ export function YouTubeMobilePlayer({
     if (!currentVideo?.timestamps) return;
 
     const relevantTimestamps = currentVideo.timestamps.filter(timestamp => {
-      const timeDiff = Math.abs(timestamp.timestamp - currentTime);
+      const timeDiff = Math.abs(timestamp.startTime - currentTime);
       return timeDiff <= STATEMENT_DETECTION_THRESHOLD;
     });
 
     // Process each relevant timestamp
     relevantTimestamps.forEach(timestamp => {
-      const statementId = `${currentIndex}-${timestamp.timestamp}`;
+      const statementId = `${currentIndex}-${timestamp.startTime}`;
       
       // Check if this statement is already active
       const isAlreadyActive = activeStatements.some(stmt => stmt.id === statementId);
@@ -130,11 +128,11 @@ export function YouTubeMobilePlayer({
       if (!isAlreadyActive) {
         const newStatement: ActiveStatement = {
           id: statementId,
-          timestamp: timestamp.timestamp,
-          title: timestamp.title || 'Key Statement',
+          timestamp: timestamp.startTime,
+          title: timestamp.statement || 'Key Statement',
           status: timestamp.factCheck?.status || 'UNVERIFIED',
-          truthPercentage: timestamp.factCheck?.truthPercentage || 0,
-          endTime: timestamp.timestamp + 30 // Statement context lasts 30 seconds
+          truthPercentage: timestamp.factCheck?.confidence as number || 0,
+          endTime: timestamp.endTime || timestamp.startTime + 30 // Use endTime or default to 30 seconds
         };
 
         setActiveStatements(prev => {
@@ -294,13 +292,7 @@ export function YouTubeMobilePlayer({
                       onClick={() => handleHeaderInteraction(statement.id)}
                     >
                       <VideoPlayerHeader 
-                        video={{
-                          ...videoData.video,
-                          factCheck: {
-                            status: statement.status,
-                            truthPercentage: statement.truthPercentage
-                          }
-                        }}
+                        video={videoData}
                         isVisible={true}
                         isMobile={true}
                         headerIndex={headerIndex}

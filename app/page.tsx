@@ -120,17 +120,11 @@ export default function Home() {
 
           {/* Featured Videos */}
           <div className="mb-8 px-8">
-<<<<<<< fix-merge-conflict
             <ErrorBoundary>
               <Suspense fallback={<SimpleSkeleton />}>
                 <FeaturedVideos />
               </Suspense>
             </ErrorBoundary>
-=======
-            <Suspense fallback={<></>}>
-              <FeaturedVideos />
-            </Suspense>
->>>>>>> master
           </div>
 
           {/* Divider */}
@@ -139,19 +133,12 @@ export default function Home() {
           </div>
 
           {/* Featured News */}
-<<<<<<< fix-merge-conflict
-          <div className="pb-8 px-8">
+          <div className="pb-8 mb-20 px-8">
             <ErrorBoundary>
               <Suspense fallback={<SimpleSkeleton />}>
                 <FeaturedNews />
               </Suspense>
             </ErrorBoundary>
-=======
-          <div className="pb-8 mb-20 px-8">
-            <Suspense fallback={<></>}>
-              <FeaturedNews />
-            </Suspense>
->>>>>>> master
           </div>
         </motion.div>
 
