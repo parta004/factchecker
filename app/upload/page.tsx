@@ -1,8 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
+<<<<<<< fix-merge-conflict
 import { Upload, Video, Link, FileText, Zap } from 'lucide-react';
 import { useState } from 'react';
+=======
+import { Video, Sparkles, PenToolIcon, TwitterIcon } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
+import UploadLayout from "../sections/upload/uploadQuote/UploadLayout";
+import { useLayoutTheme } from '@/app/hooks/use-layout-theme';
+import { GlassContainer } from '@/app/components/ui/containers/GlassContainer';
+import Image from 'next/image';
+import TwitterForm from '../sections/upload/uploadTwitter/TwitterForm';
+import UploadVideo from '../sections/upload/uploadYouTube/UploadVideo';
+>>>>>>> master
 
 export default function UploadPage() {
   const [uploadType, setUploadType] = useState<'video' | 'url' | 'text'>('url');

@@ -28,6 +28,7 @@ interface ActiveStatement {
   endTime?: number; // When the statement context ends
 }
 
+<<<<<<< fix-merge-conflict
 // Mock data for demonstration - replace with real data integration
 const mockFactCheckData: FactCheckIndicatorsType = {
   truthScore: 75,
@@ -82,6 +83,8 @@ const mockCommunityNotes: CommunityNote[] = [
   }
 ];
 
+=======
+>>>>>>> master
 export function YouTubeMobilePlayer({ 
   videos, 
   initialIndex = 0, 
@@ -284,12 +287,29 @@ export function YouTubeMobilePlayer({
 
               {/* Multiple Statement Headers */}
               {index === currentIndex && (
-                <VideoPlayerHeader 
-                //@ts-expect-error Ignore
-                  video={videoData.video}
-                  isVisible={showHeader}
-                  isMobile={true}
-                />
+                <AnimatePresence>
+                  {activeStatements.map((statement, headerIndex) => (
+                    <div 
+                      key={statement.id}
+                      onClick={() => handleHeaderInteraction(statement.id)}
+                    >
+                      <VideoPlayerHeader 
+                        video={{
+                          ...videoData.video,
+                          factCheck: {
+                            status: statement.status,
+                            truthPercentage: statement.truthPercentage
+                          }
+                        }}
+                        isVisible={true}
+                        isMobile={true}
+                        headerIndex={headerIndex}
+                        totalHeaders={activeStatements.length}
+                        className="cursor-pointer" // Make it clear it's interactive
+                      />
+                    </div>
+                  ))}
+                </AnimatePresence>
               )}
 
                 {/* Left Side Panel - Professional Fact-Check Indicators */}
