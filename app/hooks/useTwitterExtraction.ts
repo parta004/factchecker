@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { xService, TwitterExtractionRequest, TwitterExtractionResponse } from '@/app/lib/services/x-service';
+import { xService, TwitterExtractionRequest } from '@/app/lib/services/x-service';
+import { TwitterExtractionResponse } from '@/app/types/research';
 
 interface UseTwitterExtractionReturn {
   extractTweet: (request: TwitterExtractionRequest) => Promise<TwitterExtractionResponse>;

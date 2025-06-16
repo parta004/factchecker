@@ -5,10 +5,30 @@ export function getFactCheckVerdict(factCheck?: FactCheckData) {
     return null;
   }
 
+  // Calculate truthPercentage based on confidence and status
+  let truthPercentage = 50; // default
+  if (typeof factCheck.confidence === 'number') {
+    truthPercentage = factCheck.confidence;
+  } else if (typeof factCheck.confidence === 'string') {
+    truthPercentage = parseFloat(factCheck.confidence) || 50;
+  }
+
+  // Adjust based on status
+  if (factCheck.status === 'TRUE') {
+    truthPercentage = Math.max(truthPercentage, 80);
+  } else if (factCheck.status === 'FALSE') {
+    truthPercentage = Math.min(truthPercentage, 30);
+  } else if (factCheck.status === 'PARTIALLY_TRUE') {
+    truthPercentage = Math.min(Math.max(truthPercentage, 40), 70);
+  } else if (factCheck.status === 'MISLEADING') {
+    truthPercentage = Math.min(truthPercentage, 40);
+  }
+
   return {
     status: factCheck.status || 'UNVERIFIABLE',
     verdict: factCheck.verdict || 'No analysis available',
     confidence: factCheck.confidence || 0,
+    truthPercentage: Math.round(truthPercentage),
     sources: factCheck.sources,
     expertAnalysis: factCheck.expertAnalysis,
     processedAt: factCheck.processedAt

@@ -29,17 +29,8 @@ export function DesktopNavbar() {
   const { colors, mounted, getColors } = useLayoutTheme();
   const {
     isNavigating,
-    setIsNavigating,
-    isMobileMenuOpen,
-    setIsMobileMenuOpen
+    setIsNavigating
   } = useNavigationContext();
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  }, [pathname, setIsMobileMenuOpen]);
 
   const handleNavigation = useCallback(() => {
     setIsNavigating(true);

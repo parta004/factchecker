@@ -32,12 +32,7 @@ export function ConfidenceProgressBar({
         initial={{ width: 0 }}
         animate={{ width: `${factCheckInfo.truthPercentage}%` }}
         transition={{ delay: 1, duration: 1, ease: "easeOut" }}
-        className="h-full rounded-full"
-        style={{
-          background: verdictStyle 
-            ? `linear-gradient(90deg, ${verdictStyle.bgColor.split(' ')[1]}, ${verdictStyle.bgColor.split(' ')[2]})`
-            : `linear-gradient(90deg, ${colors.primary}, ${colors.primary})`
-        }}
+        className={`h-full rounded-full ${verdictStyle ? `bg-gradient-to-r ${verdictStyle.bgGradient}` : 'bg-blue-500'}`}
       />
     </motion.div>
   );

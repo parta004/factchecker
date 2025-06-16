@@ -22,6 +22,11 @@ export const NAVIGATION_CONFIG = {
       description: 'Upload content for fact-checking'
     },
     {
+      href: '/statements',
+      label: 'Statements',
+      description: 'View statement collection feed'
+    },
+    {
       href: '/profile',
       label: 'Profile',
       description: 'User profile and settings'

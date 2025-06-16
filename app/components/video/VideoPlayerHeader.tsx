@@ -6,7 +6,7 @@ import { ShimmerEffect } from './header/ShimmerEffect';
 import { BackgroundPattern } from './header/BackgroundPattern';
 import { getFactCheckVerdict } from '@/app/utils/videoUtils';
 import { headerVariants } from '../animations/variants/playerVariants';
-import { VideoWithTimestamps } from '@/app/types/video_api';
+import { VideoWithTimestamps, FactCheckData } from '@/app/types/video_api';
 import { FloatingVerdictIcon } from '../ui/Decorative/FloatingVerdictIcon';
 import VideoPlayerVoting from './header/VideoPlaterVoting';
 
@@ -29,7 +29,10 @@ export const VideoPlayerHeader = memo(function VideoPlayerHeader({
   totalHeaders = 1
 }: VideoPlayerHeaderProps) {
   const { colors, isDark } = useLayoutTheme();
-  const factCheckInfo = getFactCheckVerdict(video.factCheck);
+  // Get fact check info from the video's verdict or first timestamp with factCheck
+  const firstTimestampWithFactCheck = video.timestamps?.find(t => t.factCheck);
+  const fallbackFactCheck = video.video.verdict ? { verdict: video.video.verdict } as FactCheckData : undefined;
+  const factCheckInfo = getFactCheckVerdict(firstTimestampWithFactCheck?.factCheck || fallbackFactCheck);
   const headerSpacing = isMobile ? 220 : 260; // Height + margin
   const topPosition = 16 + (headerIndex * headerSpacing);
 

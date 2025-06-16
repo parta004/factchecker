@@ -72,13 +72,13 @@ export function FactCheckBadge({
           >
             <div
               className={cn(
-                "p-3 rounded-2xl backdrop-blur-sm shadow-xl",
+                "p-3 rounded-2xl backdrop-blur-sm shadow-xl bg-gradient-to-br",
+                verdictStyle.bgGradient,
                 isMobile ? "p-4" : "p-3"
               )}
               style={{
-                background: `linear-gradient(135deg, ${verdictStyle.bgColor.split(' ')[1]} 0%, ${verdictStyle.bgColor.split(' ')[2]} 100%)`,
                 border: `2px solid rgba(255, 255, 255, 0.3)`,
-                boxShadow: `0 8px 25px ${verdictStyle.bgColor.split(' ')[1]}40`
+                boxShadow: `0 8px 25px rgba(0, 0, 0, 0.2)`
               }}
             >
               <VerdictIcon
@@ -91,9 +91,8 @@ export function FactCheckBadge({
 
             {/* Enhanced Glow effect */}
             <motion.div
-              className="absolute inset-0 rounded-2xl blur-xl opacity-60"
+              className={`absolute inset-0 rounded-2xl blur-xl opacity-60 bg-gradient-to-br ${verdictStyle.bgGradient}`}
               style={{
-                background: `linear-gradient(135deg, ${verdictStyle.bgColor.split(' ')[1]} 0%, ${verdictStyle.bgColor.split(' ')[2]} 100%)`,
                 zIndex: -1
               }}
               animate={{

@@ -98,13 +98,13 @@ export const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(({
   ...props
 }, ref) => {
   // Determine theme
-  const currentTheme = theme === 'auto' 
+  const currentTheme: 'light' | 'dark' = theme === 'auto' 
     ? (typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light')
-    : theme;
+    : theme as 'light' | 'dark';
 
   // Build glass effect classes
-  const glassClass = glassStyles[style][currentTheme];
-  const borderClass = border === 'none' ? '' : borderStyles[border][currentTheme];
+  const glassClass = glassStyles[style as keyof typeof glassStyles][currentTheme];
+  const borderClass = border === 'none' ? '' : (borderStyles[border as keyof typeof borderStyles] as any)[currentTheme];
   const shadowClass = shadowStyles[shadow as keyof typeof shadowStyles];
   const roundedClass = roundedStyles[rounded as keyof typeof roundedStyles];
 

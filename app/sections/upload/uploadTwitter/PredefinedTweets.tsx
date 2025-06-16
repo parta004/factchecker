@@ -4,7 +4,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Heart, Repeat2, MessageCircle, CheckCircle } from 'lucide-react';
 import { useLayoutTheme } from '@/app/hooks/use-layout-theme';
-import { xService, PredefinedTweet } from '@/app/lib/services/x-service';
+import { xService } from '@/app/lib/services/x-service';
+import { PredefinedTweet } from '@/app/types/research';
 
 interface PredefinedTweetsProps {
   onSelectTweet: (tweet: PredefinedTweet) => void;
